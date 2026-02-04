@@ -64,7 +64,26 @@ For other platforms, the app includes:
 4. Click **Deploy** — your app will be public and automatically update on new commits.
 
 Notes:
-- If you need Google Drive integration, add the `client_secrets.json` contents to Streamlit Secrets or upload it to the app root (use caution with sensitive files).
+- If you need Google Drive integration, add the `client_secrets.json` contents to Streamlit **Secrets** (recommended) or upload it to the app root (use caution with sensitive files).
+
+#### Streamlit Secrets (recommended)
+In Streamlit Cloud, open your app settings → **Secrets** and add the following TOML to securely set admin credentials and Google Drive info.
+
+Example:
+
+```toml
+# Admin credentials
+[admin]
+username = "your_admin_username"
+password = "your_admin_password"
+
+# Google Drive client secrets (as a JSON string) — paste the full client_secrets JSON here
+[gdrive]
+client_secrets = "{\"installed\": {\"client_id\": \"YOUR_CLIENT_ID\", ... }}"
+```
+
+- The app will read `admin` and `gdrive.client_secrets` from `st.secrets` on startup and create the necessary `admin_config.json` and `client_secrets.json` files automatically.
+- **Do not** commit `client_secrets.json` or `mycreds.txt` to the repository — they are ignored in `.gitignore` for security.
 
 ### Alternative: Render / Railway / Other
 - Create a new web service, point it to this repository, select Python, and set the build command to `pip install -r requirements.txt` and start command to `streamlit run Code.py --server.port $PORT`.
