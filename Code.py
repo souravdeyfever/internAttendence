@@ -42,8 +42,34 @@ if not os.path.exists(ATTEND_DB):
 
 # Default admin password file
 if not os.path.exists(ADMIN_FILE):
-    with open(ADMIN_FILE,"w") as f:
-        json.dump({"username":"sourav.dey","password":"2233"}, f)
+    # Prefer Streamlit secrets in deployed environments
+    try:
+        secret_admin = st.secrets.get("admin", None)
+    except Exception:
+        secret_admin = None
+
+    if secret_admin and isinstance(secret_admin, dict) and secret_admin.get("username") and secret_admin.get("password"):
+        with open(ADMIN_FILE, "w") as f:
+            json.dump({"username": secret_admin.get("username"), "password": secret_admin.get("password")}, f)
+    else:
+        # Create a safe placeholder - change in production or provide credentials via Streamlit Secrets
+        with open(ADMIN_FILE, "w") as f:
+            json.dump({"username": "admin", "password": "changeme"}, f)
+
+# If GDrive client secrets are stored in Streamlit secrets (as a JSON string), write them to file so pydrive2 can use them
+try:
+    gdrive_secret = st.secrets.get("gdrive", None)
+except Exception:
+    gdrive_secret = None
+
+if gdrive_secret and isinstance(gdrive_secret, dict) and gdrive_secret.get("client_secrets"):
+    try:
+        cs_content = gdrive_secret.get("client_secrets")
+        if cs_content and not os.path.exists("client_secrets.json"):
+            with open("client_secrets.json", "w") as f:
+                f.write(cs_content)
+    except Exception:
+        pass
 
 # ------------------------------------------------
 # GOOGLE DRIVE AUTH
