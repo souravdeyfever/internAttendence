@@ -183,6 +183,10 @@ st.set_page_config(
 st.title("Internship Attendence")
 st.subheader("School of Internal Security and SMART Policing, Rashtriya Raksha University")
 
+# Initialize current page if not set
+if "current_page" not in st.session_state:
+    st.session_state.current_page = "attendance"
+
 # Top navigation bar with Register and Admin in top right
 col1, col2, col3 = st.columns([1, 1, 2])  # Left space, center space, right space
 
@@ -200,10 +204,6 @@ if st.session_state.current_page in ["register", "admin"]:
     if st.button("⬅️ Back to Attendance", key="back_button"):
         st.session_state.current_page = "attendance"
         st.rerun()
-
-# Initialize current page if not set
-if "current_page" not in st.session_state:
-    st.session_state.current_page = "attendance"
 
 # Main content area
 if st.session_state.current_page == "register":

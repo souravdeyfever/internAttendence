@@ -39,6 +39,7 @@ For other platforms, the app includes:
 - **👑 Admin Panel**: Manage groups, edit records, change password, export to Excel
 - **☁️ Google Drive Integration**: Automatic photo upload to cloud storage
 - **📍 GPS Location**: Accurate location tracking from photo EXIF data
+- **📊 Dashboard & Reports**: KPI metrics, interactive filters, attendance-by-group charts, time-series charts, top attendees, GPS map, and CSV export
 
 ## Setup
 
@@ -53,6 +54,26 @@ For other platforms, the app includes:
    ```
 
 3. Open your browser to `http://localhost:8501`
+
+## Hosting / Deployment
+
+### ✅ Recommended: Streamlit Community Cloud
+1. Fork this repository to your GitHub account.
+2. Go to https://share.streamlit.io/ and connect your GitHub account.
+3. Click **New app** → select your fork, branch `main`, and `Code.py` as the file to run.
+4. Click **Deploy** — your app will be public and automatically update on new commits.
+
+Notes:
+- If you need Google Drive integration, add the `client_secrets.json` contents to Streamlit Secrets or upload it to the app root (use caution with sensitive files).
+
+### Alternative: Render / Railway / Other
+- Create a new web service, point it to this repository, select Python, and set the build command to `pip install -r requirements.txt` and start command to `streamlit run Code.py --server.port $PORT`.
+- Ensure `runtime.txt` pins Python version (already included).
+
+### Local Docker (optional)
+- Build a container and run it behind a reverse proxy if required.
+
+---
 
 ## Mobile Usage
 
